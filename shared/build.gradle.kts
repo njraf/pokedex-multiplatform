@@ -31,10 +31,17 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
-                implementation(compose.foundation)
+                implementation(compose.foundation) // change to api() to match precompose documentation???
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                api(compose.animation)
+
+                val precomposeVersion="1.4.4"
+                api("moe.tlaster:precompose:$precomposeVersion")
+                api("moe.tlaster:precompose-molecule:$precomposeVersion") // For Molecule integration
+                api("moe.tlaster:precompose-viewmodel:$precomposeVersion") // For ViewModel integration
             }
         }
         val androidMain by getting {
