@@ -1,4 +1,4 @@
-rootProject.name = "MyApplication"
+rootProject.name = "PokedexMultiplatform"
 
 include(":androidApp")
 include(":shared")
