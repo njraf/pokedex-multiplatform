@@ -24,6 +24,7 @@ fun App() {
     val routes = listOf("/page1", "/page2", "/page3")
 
     val counterViewModel = viewModel(modelClass = CounterViewModel::class) { CounterViewModel() }
+    val helloViewModel = viewModel(modelClass = HelloViewModel::class) { HelloViewModel() }
 
     MaterialTheme {
         Scaffold(
@@ -45,7 +46,7 @@ fun App() {
                     HomeScreen(navigator, routes)
                 } // scene
                 scene(route = routes[1]) {
-                    HelloComposable()
+                    HelloComposable(helloViewModel)
                 } // scene
                 scene(route = routes[2]) {
                     CounterScreen(counterViewModel)

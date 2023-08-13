@@ -1,5 +1,6 @@
 package screens
 
+import HelloViewModel
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -19,9 +20,9 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun HelloComposable() {
-    var greetingText by remember { mutableStateOf("Hello, World!") }
-    var showImage by remember { mutableStateOf(false) }
+fun HelloComposable(viewModel: HelloViewModel) {
+    var greetingText by remember { viewModel.greetingText }
+    var showImage by remember { viewModel.showImage }
     Column(
         Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
