@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
+import moe.tlaster.precompose.viewmodel.viewModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import screens.CounterScreen
 import screens.HelloComposable
@@ -21,6 +22,8 @@ fun App() {
     val navigator = rememberNavigator()
     val isRootPage by navigator.canGoBack.collectAsState(initial = false)
     val routes = listOf("/page1", "/page2", "/page3")
+
+    val counterViewModel = viewModel(modelClass = CounterViewModel::class) { CounterViewModel() }
 
     MaterialTheme {
         Scaffold(
@@ -45,7 +48,7 @@ fun App() {
                     HelloComposable()
                 } // scene
                 scene(route = routes[2]) {
-                    CounterScreen()
+                    CounterScreen(counterViewModel)
                 } // scene
             } // NavHost
         } // Scaffold
