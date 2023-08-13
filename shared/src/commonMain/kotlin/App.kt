@@ -43,7 +43,7 @@ fun App() {
                 initialRoute = routes[0]
             ) {
                 scene(route = routes[0]) {
-                    HomeScreen(navigator, routes)
+                    HomeScreen(navigator, routes, counterViewModel.counter.value)
                 } // scene
                 scene(route = routes[1]) {
                     HelloComposable(helloViewModel)
