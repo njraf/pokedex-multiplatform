@@ -1,4 +1,4 @@
-package com.myapplication
+package com.rafala
 
 import MainView
 import android.os.Bundle
