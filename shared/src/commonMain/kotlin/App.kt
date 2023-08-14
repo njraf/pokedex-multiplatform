@@ -1,3 +1,4 @@
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -9,10 +10,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.viewmodel.viewModel
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import screens.CounterScreen
 import screens.HelloComposable
 import screens.HomeScreen
@@ -29,6 +30,7 @@ fun App() {
 
     MaterialTheme {
         Scaffold(
+            modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(navigationIcon = {
                     if (isRootPage) {
