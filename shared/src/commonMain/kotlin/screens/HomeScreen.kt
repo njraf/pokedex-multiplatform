@@ -11,6 +11,7 @@ fun HomeScreen(navigator: Navigator, routes: List<String>, count: Int) {
     Column {
         Button(onClick = { navigator.navigate(routes[1]) }) { Text("To Page1") }
         Button(onClick = { navigator.navigate(routes[2]) }) { Text("To Page2") }
+        Button(onClick = { navigator.navigate(routes[3]) }) { Text("To Pokemon") }
         Text(count.toString())
     }
 }

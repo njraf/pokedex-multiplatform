@@ -60,9 +60,6 @@ kotlin {
                 api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
-
-                // use only one or none of the following
-                //implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
@@ -81,6 +78,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.common)
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
     }

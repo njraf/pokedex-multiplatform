@@ -16,12 +16,13 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import screens.CounterScreen
 import screens.HelloComposable
 import screens.HomeScreen
+import screens.PokemonListScreen
 
 @Composable
 fun App() {
     val navigator = rememberNavigator()
     val isRootPage by navigator.canGoBack.collectAsState(initial = false)
-    val routes = listOf("/page1", "/page2", "/page3")
+    val routes = listOf("/page1", "/page2", "/page3", "/page4")
 
     val counterViewModel = viewModel(modelClass = CounterViewModel::class) { CounterViewModel() }
     val helloViewModel = viewModel(modelClass = HelloViewModel::class) { HelloViewModel() }
@@ -50,6 +51,9 @@ fun App() {
                 } // scene
                 scene(route = routes[2]) {
                     CounterScreen(counterViewModel)
+                } // scene
+                scene(route = routes[3]) {
+                    PokemonListScreen()
                 } // scene
             } // NavHost
         } // Scaffold
