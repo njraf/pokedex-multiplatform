@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.viewmodel.viewModel
@@ -25,8 +28,15 @@ fun App() {
     val isRootPage by navigator.canGoBack.collectAsState(initial = false)
     val routes = listOf("/page1", "/page2", "/page3", "/page4")
 
+    val httpClient = HttpClient {
+        install(ContentNegotiation) {
+            json()
+        }
+    }
+
     val counterViewModel = viewModel(modelClass = CounterViewModel::class) { CounterViewModel() }
     val helloViewModel = viewModel(modelClass = HelloViewModel::class) { HelloViewModel() }
+    val pokemonViewModel = viewModel(modelClass = PokemonListViewModel::class) { PokemonListViewModel(PokemonRepository(PokemonDataSource(httpClient))) }
 
     MaterialTheme {
         Scaffold(
@@ -55,7 +65,7 @@ fun App() {
                     CounterScreen(counterViewModel)
                 } // scene
                 scene(route = routes[3]) {
-                    PokemonListScreen()
+                    PokemonListScreen(pokemonViewModel)
                 } // scene
             } // NavHost
         } // Scaffold

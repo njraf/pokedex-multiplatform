@@ -10,30 +10,19 @@ import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
-class PokemonListViewModel : ViewModel() {
-    private val httpClient = HttpClient {
-        install(ContentNegotiation) {
-            json()
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        httpClient.close()
-    }
+class PokemonListViewModel(private val pokemonRepository: PokemonRepository) : ViewModel() {
 
     private var _uiState = MutableStateFlow<PokemonUiState>(PokemonUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
-        getNames()
+        getNames(Regions.KANTO)
     }
 
-    private fun getNames(): List<PokemonEntry> {
+    fun getNames(region: Regions): List<PokemonEntry> {
         var names: List<PokemonEntry> = emptyList()
         viewModelScope.launch {
-            val pokedex = httpClient.get("https://pokeapi.co/api/v2/pokedex/2/").body<Pokedex>()
-            names = pokedex.pokemon_entries
+            names = pokemonRepository.getPokemon(region)
             _uiState.update {
                 it.copy(pokemonNames = names)
             }
