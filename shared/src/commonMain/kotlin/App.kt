@@ -22,11 +22,17 @@ import screens.HelloComposable
 import screens.HomeScreen
 import screens.PokemonListScreen
 
+enum class Screens(val route: String) {
+    HOME("/home"),
+    SCREEN2("/page2"),
+    SCREEN3("/page3"),
+    POKE_NAMES("/poke_names")
+}
+
 @Composable
 fun App() {
     val navigator = rememberNavigator()
     val isRootPage by navigator.canGoBack.collectAsState(initial = false)
-    val routes = listOf("/page1", "/page2", "/page3", "/page4")
 
     val httpClient = HttpClient {
         install(ContentNegotiation) {
@@ -53,18 +59,18 @@ fun App() {
         ) {
             NavHost(
                 navigator = navigator,
-                initialRoute = routes[0]
+                initialRoute = Screens.HOME.route
             ) {
-                scene(route = routes[0]) {
-                    HomeScreen(navigator, routes, counterViewModel.counter.value)
+                scene(route = Screens.HOME.route) {
+                    HomeScreen(navigator, Screens.entries.map { it.route }, counterViewModel.counter.value)
                 } // scene
-                scene(route = routes[1]) {
+                scene(route = Screens.SCREEN2.route) {
                     HelloComposable(helloViewModel)
                 } // scene
-                scene(route = routes[2]) {
+                scene(route = Screens.SCREEN3.route) {
                     CounterScreen(counterViewModel)
                 } // scene
-                scene(route = routes[3]) {
+                scene(route = Screens.POKE_NAMES.route) {
                     PokemonListScreen(pokemonViewModel)
                 } // scene
             } // NavHost
