@@ -1,7 +1,9 @@
-import androidx.compose.ui.window.Popup
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 
 enum class Regions(val code: String) {
     KANTO("2"),
@@ -19,7 +21,7 @@ enum class Regions(val code: String) {
 class PokemonDataSource(private val client: HttpClient) {
 
     suspend fun fetchPokemon(region: Regions): List<PokemonEntry> {
-        return try {
+        return withContext(Dispatchers.IO) {
             val numRequests = if (region == Regions.KALOS) {
                 3
             } else {
@@ -27,16 +29,12 @@ class PokemonDataSource(private val client: HttpClient) {
             }
 
             val entries: MutableList<PokemonEntry> = emptyList<PokemonEntry>().toMutableList()
-
             for (regionCode in (region.code.toInt() until (region.code.toInt() + numRequests))) {
                 val pokedex =
                     client.get("https://pokeapi.co/api/v2/pokedex/$regionCode/").body<Pokedex>()
                 entries.addAll(pokedex.pokemon_entries)
             }
             entries
-        } catch (e: Exception) {
-            println("Error: " + e.message)
-            emptyList()
-        }
+        } // withContext
     }
 }

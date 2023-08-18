@@ -1,8 +1,6 @@
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.get
-import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,9 +20,13 @@ class PokemonListViewModel(private val pokemonRepository: PokemonRepository) : V
     fun getNames(region: Regions): List<PokemonEntry> {
         var names: List<PokemonEntry> = emptyList()
         viewModelScope.launch {
-            names = pokemonRepository.getPokemon(region)
-            _uiState.update {
-                it.copy(pokemonNames = names)
+            try {
+                names = pokemonRepository.getPokemon(region)
+                _uiState.update {
+                    it.copy(pokemonNames = names)
+                }
+            } catch (e: Exception) {
+                println("Error: " + e.message)
             }
         }
         return names

@@ -4,9 +4,9 @@ import PokemonListViewModel
 import Regions
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
@@ -29,8 +29,8 @@ fun PokemonListScreen(pokemonListViewModel: PokemonListViewModel) {
     }
 
     Column {
-        Row {
-            for (region in Regions.entries) {
+        LazyRow {
+            items(Regions.entries) { region ->
                 Button(onClick = { pokemonListViewModel.getNames(region) }) { Text(region.name) }
             }
         }
