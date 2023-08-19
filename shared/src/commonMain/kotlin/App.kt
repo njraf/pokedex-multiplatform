@@ -22,11 +22,11 @@ import screens.HelloComposable
 import screens.HomeScreen
 import screens.PokemonListScreen
 
-enum class Screens(val route: String) {
-    HOME("/home"),
-    SCREEN2("/page2"),
-    SCREEN3("/page3"),
-    POKE_NAMES("/poke_names")
+enum class Screens(val screenName: String, val route: String) {
+    HOME("Home", "/home"),
+    HELLO("Hello Page", "/hello"),
+    COUNTER("Counter Page", "/counter"),
+    POKE_NAMES("Pokemon Names", "/poke_names")
 }
 
 @Composable
@@ -62,12 +62,12 @@ fun App() {
                 initialRoute = Screens.HOME.route
             ) {
                 scene(route = Screens.HOME.route) {
-                    HomeScreen(navigator, Screens.entries.map { it.route }, counterViewModel.counter.value)
+                    HomeScreen(navigator, Screens.entries, counterViewModel.counter.value)
                 } // scene
-                scene(route = Screens.SCREEN2.route) {
+                scene(route = Screens.HELLO.route) {
                     HelloComposable(helloViewModel)
                 } // scene
-                scene(route = Screens.SCREEN3.route) {
+                scene(route = Screens.COUNTER.route) {
                     CounterScreen(counterViewModel)
                 } // scene
                 scene(route = Screens.POKE_NAMES.route) {

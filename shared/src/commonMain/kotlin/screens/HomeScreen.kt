@@ -1,17 +1,19 @@
 package screens
 
+import Screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import moe.tlaster.precompose.navigation.Navigator
+import kotlin.enums.EnumEntries
 
 @Composable
-fun HomeScreen(navigator: Navigator, routes: List<String>, count: Int) {
+fun HomeScreen(navigator: Navigator, routes: EnumEntries<Screens>, count: Int) {
     Column {
-        Button(onClick = { navigator.navigate(routes[1]) }) { Text("To Page1") }
-        Button(onClick = { navigator.navigate(routes[2]) }) { Text("To Page2") }
-        Button(onClick = { navigator.navigate(routes[3]) }) { Text("To Pokemon") }
+        Button(onClick = { navigator.navigate(routes[1].route) }) { Text("To ${routes[1].screenName}") }
+        Button(onClick = { navigator.navigate(routes[2].route) }) { Text("To ${routes[2].screenName}") }
+        Button(onClick = { navigator.navigate(routes[3].route) }) { Text("To ${routes[3].screenName}") }
         Text(count.toString())
     }
 }
