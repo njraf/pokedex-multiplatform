@@ -38,7 +38,7 @@ fun PokemonListScreen(pokemonListViewModel: PokemonListViewModel, onDetailClick:
         }
         LazyColumn {
             items(uiState.pokemonNames) { entry ->
-                Text("${entry.entry_number}. ${entry.pokemon_species.name}", modifier = Modifier.clickable { onDetailClick(entry.pokemon_species.name) })
+                Text("${entry.entryNumber}. ${entry.pokemonSpecies.name}", modifier = Modifier.clickable { onDetailClick(entry.pokemonSpecies.name) })
             }
         }
     }

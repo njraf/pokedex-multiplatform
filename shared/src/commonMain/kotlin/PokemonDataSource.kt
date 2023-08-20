@@ -18,6 +18,8 @@ enum class Regions(val code: String) {
     //NATIONAL("1")
 }
 
+private const val BASE_URL = "https://pokeapi.co/api/v2"
+
 class PokemonDataSource(private val client: HttpClient) {
 
     suspend fun fetchPokemon(region: Regions): List<PokemonEntry> {
@@ -31,8 +33,8 @@ class PokemonDataSource(private val client: HttpClient) {
             val entries: MutableList<PokemonEntry> = emptyList<PokemonEntry>().toMutableList()
             for (regionCode in (region.code.toInt() until (region.code.toInt() + numRequests))) {
                 val pokedex =
-                    client.get("https://pokeapi.co/api/v2/pokedex/$regionCode/").body<Pokedex>()
-                entries.addAll(pokedex.pokemon_entries)
+                    client.get("$BASE_URL/pokedex/$regionCode/").body<Pokedex>()
+                entries.addAll(pokedex.pokemonEntries)
             }
             entries
         } // withContext
@@ -40,7 +42,7 @@ class PokemonDataSource(private val client: HttpClient) {
 
     suspend fun fetchPokemonDetails(name: String): PokemonDetails {
         return withContext(Dispatchers.IO) {
-            client.get("https://pokeapi.co/api/v2/pokemon/$name/").body<PokemonDetails>()
+            client.get("$BASE_URL/pokemon/$name/").body<PokemonDetails>()
         }
     }
 }
