@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.query
@@ -40,7 +41,7 @@ fun App() {
 
     val httpClient = HttpClient {
         install(ContentNegotiation) {
-            json()
+            json(Json { coerceInputValues = true })
         }
     }
 

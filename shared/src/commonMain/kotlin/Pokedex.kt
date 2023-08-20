@@ -1,15 +1,16 @@
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Pokedex( // regional pokedex
     val descriptions: List<Description>, // description with region and game names | ignore
     val id: Int, // URL parameter | ignore
-    val is_main_series: Boolean, // ignore
-    val name: String, // region name
-    val names: List<Name>, // region name in other languages | ignore
-    val pokemon_entries: List<PokemonEntry>, // pokedex entries | main content
+    @SerialName("is_main_series") val isMainSeries: Boolean, // ignore
+    @SerialName("name") val regionName: String, // region name
+    @SerialName("names") val regionNames: List<Name>, // region name in other languages | ignore
+    @SerialName("pokemon_entries") val pokemonEntries: List<PokemonEntry>, // pokedex entries | main content
     val region: Region, // region name | ignore
-    val version_groups: List<VersionGroup> // game names | ignore
+    @SerialName("version_groups") val versionGroups: List<VersionGroup> // game names | ignore
 )
 
 @Serializable
@@ -26,8 +27,8 @@ data class Name(
 
 @Serializable
 data class PokemonEntry(
-    val entry_number: Int,
-    val pokemon_species: PokemonSpecies
+    @SerialName("entry_number") val entryNumber: Int,
+    @SerialName("pokemon_species") val pokemonSpecies: PokemonSpecies
 )
 
 @Serializable

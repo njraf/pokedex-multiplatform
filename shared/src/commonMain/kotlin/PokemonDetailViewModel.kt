@@ -23,4 +23,4 @@ class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) :
     }
 }
 
-data class PokemonDetailsUiState(val pokemonDetails: PokemonDetails? = null)
+data class PokemonDetailsUiState(val pokemonDetails: PokemonDetails = PokemonDetails())

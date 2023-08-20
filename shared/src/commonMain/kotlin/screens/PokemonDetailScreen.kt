@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: String) {
     val uiState by pokemonDetailViewModel.uiState.collectAsState()
 
-    if ((uiState.pokemonDetails?.name?.lowercase() != name)) {
+    if ((uiState.pokemonDetails.name.lowercase() != name)) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
@@ -28,10 +28,10 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
     }
 
     Column(modifier = Modifier.padding(10.dp)) {
-        Text(uiState.pokemonDetails?.name ?: "ERROR")
+        Text(uiState.pokemonDetails.name)
         Row {
-            for (type in uiState.pokemonDetails?.types ?: emptyList()) {
-                Text(type.type?.name ?: "ERROR", modifier = Modifier.padding(10.dp))
+            for (type in uiState.pokemonDetails.types) {
+                Text(type.type.name, modifier = Modifier.padding(10.dp))
             }
         }
     }
