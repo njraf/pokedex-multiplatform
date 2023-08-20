@@ -37,4 +37,10 @@ class PokemonDataSource(private val client: HttpClient) {
             entries
         } // withContext
     }
+
+    suspend fun fetchPokemonDetails(name: String): PokemonDetails {
+        return withContext(Dispatchers.IO) {
+            client.get("https://pokeapi.co/api/v2/pokedex/$name/").body<PokemonDetails>()
+        }
+    }
 }

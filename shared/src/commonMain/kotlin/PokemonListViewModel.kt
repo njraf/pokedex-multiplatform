@@ -13,10 +13,6 @@ class PokemonListViewModel(private val pokemonRepository: PokemonRepository) : V
     private var _uiState = MutableStateFlow<PokemonUiState>(PokemonUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        getNames(Regions.KANTO)
-    }
-
     fun getNames(region: Regions): List<PokemonEntry> {
         var names: List<PokemonEntry> = emptyList()
         viewModelScope.launch {

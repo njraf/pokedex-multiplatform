@@ -15,18 +15,22 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import moe.tlaster.precompose.navigation.NavHost
+import moe.tlaster.precompose.navigation.path
+import moe.tlaster.precompose.navigation.query
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.viewmodel.viewModel
 import screens.CounterScreen
 import screens.HelloComposable
 import screens.HomeScreen
+import screens.PokemonDetailScreen
 import screens.PokemonListScreen
 
 enum class Screens(val screenName: String, val route: String) {
     HOME("Home", "/home"),
     HELLO("Hello Page", "/hello"),
     COUNTER("Counter Page", "/counter"),
-    POKE_NAMES("Pokemon Names", "/poke_names")
+    POKE_NAMES("Pokemon Names", "/poke_names"),
+    POKE_DETAILS("Pokemon Details", "/poke_details/{name}")
 }
 
 @Composable
@@ -40,9 +44,12 @@ fun App() {
         }
     }
 
+    val pokemonRepo = PokemonRepository(PokemonDataSource(httpClient))
+
     val counterViewModel = viewModel(modelClass = CounterViewModel::class) { CounterViewModel() }
     val helloViewModel = viewModel(modelClass = HelloViewModel::class) { HelloViewModel() }
-    val pokemonViewModel = viewModel(modelClass = PokemonListViewModel::class) { PokemonListViewModel(PokemonRepository(PokemonDataSource(httpClient))) }
+    val pokemonListViewModel = viewModel(modelClass = PokemonListViewModel::class) { PokemonListViewModel(pokemonRepo) }
+    val pokemonDetailViewModel = viewModel(modelClass = PokemonDetailViewModel::class) { PokemonDetailViewModel(pokemonRepo) }
 
     MaterialTheme {
         Scaffold(
@@ -71,7 +78,11 @@ fun App() {
                     CounterScreen(counterViewModel)
                 } // scene
                 scene(route = Screens.POKE_NAMES.route) {
-                    PokemonListScreen(pokemonViewModel)
+                    PokemonListScreen(pokemonListViewModel, onDetailClick = { name -> navigator.navigate(Screens.POKE_DETAILS.route.dropLastWhile { it != '/' } + name) })
+                } // scene
+                scene(route = Screens.POKE_DETAILS.route) {
+                    val name = it.path("name", "pikachu")!!
+                    PokemonDetailScreen(pokemonDetailViewModel, name)
                 } // scene
             } // NavHost
         } // Scaffold
