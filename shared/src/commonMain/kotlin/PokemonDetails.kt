@@ -49,7 +49,7 @@ data class PokemonDetails(
 @Serializable
 data class Ability(
     val ability: AbilityX = AbilityX("", ""),
-    val is_hidden: Boolean = false,
+    @SerialName("is_hidden") val isHidden: Boolean = false,
     val slot: Int = 0
 )
 
@@ -61,20 +61,20 @@ data class Form(
 
 @Serializable
 data class GameIndice(
-    val game_index: Int = 0,
+    @SerialName("game_index") val gameIndex: Int = 0,
     val version: Version = Version("", "")
 )
 
 @Serializable
 data class HeldItem(
     val item: Item = Item("", ""),
-    val version_details: List<VersionDetail> = emptyList()
+    @SerialName("version_details") val versionDetails: List<VersionDetail> = emptyList()
 )
 
 @Serializable
 data class Move(
     val move: MoveX = MoveX("", ""),
-    val version_group_details: List<VersionGroupDetail> = emptyList()
+    @SerialName("version_group_details") val versionGroupDetails: List<VersionGroupDetail> = emptyList()
 )
 
 @Serializable
@@ -105,7 +105,7 @@ data class Sprites(
 
 @Serializable
 data class Stat(
-    val base_stat: Int = 0,
+    @SerialName("base_stat") val baseStat: Int = 0,
     val effort: Int = 0,
     val stat: StatX = StatX("", "")
 )
@@ -143,8 +143,8 @@ data class MoveX(
 @Serializable
 data class VersionGroupDetail(
     @SerialName("level_learned_at") val levelLearnedAt: Int = 0,
-    val move_learn_method: MoveLearnMethod = MoveLearnMethod("", ""),
-    val version_group: VersionGroup = VersionGroup("", "")
+    @SerialName("move_learn_method") val moveLearnMethod: MoveLearnMethod = MoveLearnMethod("", ""),
+    @SerialName("version_group") val versionGroup: VersionGroup = VersionGroup("", "")
 )
 
 @Serializable
