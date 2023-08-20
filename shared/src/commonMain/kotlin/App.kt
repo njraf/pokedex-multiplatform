@@ -67,7 +67,7 @@ fun App() {
         ) {
             NavHost(
                 navigator = navigator,
-                initialRoute = Screens.HOME.route
+                initialRoute = Screens.POKE_NAMES.route//Screens.HOME.route
             ) {
                 scene(route = Screens.HOME.route) {
                     HomeScreen(navigator, Screens.entries, counterViewModel.counter.value)
