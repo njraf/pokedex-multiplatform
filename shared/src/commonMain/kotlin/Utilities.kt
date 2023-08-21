@@ -1,6 +1,6 @@
 import androidx.compose.ui.graphics.Color
 
-enum class Types(val typeName: String, val color: Color) {
+enum class PokemonTypes(val typeName: String, val color: Color) {
     NORMAL("normal", Color(0xFFAAAA99)),
     FIRE("fire", Color(0XFFFF4422)),
     WATER("water", Color(0xFF3399FF)),

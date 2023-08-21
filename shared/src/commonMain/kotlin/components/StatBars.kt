@@ -21,20 +21,8 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun StatBars(stats: List<Stat>, mainType: TypeX) {
-    val mainColor =
-        Types.entries.firstNotNullOf { t -> t.color.takeIf { t.typeName == mainType.name } }
-
-    LazyColumn(
-        modifier = Modifier.background(
-            Color(
-                red = mainColor.red,
-                green = mainColor.green,
-                blue = mainColor.blue,
-                alpha = 0.2f
-            )
-        )
-    ) {
+fun StatBars(stats: List<Stat>, mainColor: Color, modifier: Modifier) {
+    LazyColumn(modifier = modifier) {
         items(stats) { stat ->
             Row(
                 modifier = Modifier.padding(4.dp)

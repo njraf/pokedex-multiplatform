@@ -212,8 +212,8 @@ data class Home(
 
 @Serializable
 data class OfficialArtwork(
-    val front_default: String = "",
-    val front_shiny: String
+    @SerialName("front_default") val frontDefault: String = "",
+    @SerialName("front_shiny") val frontShiny: String
 )
 
 @Serializable
@@ -416,8 +416,8 @@ data class XY(
 
 @Serializable
 data class Icons(
-    val front_default: String = "",
-    val front_female: String = ""
+    @SerialName("front_default") val frontDefault: String = "",
+    @SerialName("front_female") val frontFemale: String = ""
 )
 
 @Serializable

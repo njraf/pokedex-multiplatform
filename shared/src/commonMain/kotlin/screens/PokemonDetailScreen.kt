@@ -2,14 +2,13 @@ package screens
 
 import components.StatBars
 import PokemonDetailViewModel
-import Types
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,8 +17,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import components.TypeRow
+import io.kamel.core.Resource
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 
 @Composable
 fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: String) {
@@ -33,17 +36,28 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
         return
     }
 
-    Column(modifier = Modifier.padding(10.dp)) {
+    Column(modifier = Modifier.fillMaxSize().padding(10.dp)) {
+        val image = asyncPainterResource(uiState.pokemonDetails.sprites.other.officialArtwork.frontDefault)
+        if (image is Resource.Success) {
+            KamelImage(
+                resource = image,
+                contentDescription = uiState.pokemonDetails.name,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.size(150.dp)
+            )
+        } else {
+            Box(modifier = Modifier.size(150.dp), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+
         // name, weight, height, dex number
-        Row {
+        Row(modifier = Modifier.fillMaxSize()) {
             // name, dex number, types
             Column {
-                val pokemonName = if (uiState.pokemonDetails.name.isNotEmpty())
-                    uiState.pokemonDetails.name.replace(
-                        uiState.pokemonDetails.name[0],
-                        uiState.pokemonDetails.name[0].uppercaseChar()
-                    )
-                else ""
+                val pokemonName = if (uiState.pokemonDetails.name.isNotEmpty()) {
+                    uiState.pokemonDetails.name.mapIndexed { index, c -> if (index == 0) c.uppercaseChar() else c }.fold("") { acc, c -> acc + c }
+                } else ""
                 Text(pokemonName)
                 Text("#${uiState.pokemonDetails.order}")
 
@@ -63,6 +77,16 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
             }
         } // Row
 
-        StatBars(uiState.pokemonDetails.stats, uiState.pokemonDetails.types[0].type)
+        val mainColor =
+            PokemonTypes.entries.firstNotNullOf { t -> t.color.takeIf { t.typeName == uiState.pokemonDetails.types[0].type.name } }
+
+        StatBars(uiState.pokemonDetails.stats, mainColor, modifier = Modifier.fillMaxSize().background(
+            Color(
+                red = mainColor.red,
+                green = mainColor.green,
+                blue = mainColor.blue,
+                alpha = 0.2f
+            )
+        ))
     } // Column
 }
