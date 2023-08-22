@@ -31,7 +31,7 @@ enum class Screens(val screenName: String, val route: String) {
     HELLO("Hello Page", "/hello"),
     COUNTER("Counter Page", "/counter"),
     POKE_NAMES("Pokemon Names", "/poke_names"),
-    POKE_DETAILS("Pokemon Details", "/poke_details/{name}")
+    POKE_DETAILS("Pokemon Details", "/poke_details/{name}/{nationalDexNumber}")
 }
 
 @Composable
@@ -79,11 +79,15 @@ fun App() {
                     CounterScreen(counterViewModel)
                 } // scene
                 scene(route = Screens.POKE_NAMES.route) {
-                    PokemonListScreen(pokemonListViewModel, onDetailClick = { name -> navigator.navigate(Screens.POKE_DETAILS.route.dropLastWhile { it != '/' } + name) })
+                    PokemonListScreen(
+                        pokemonListViewModel,
+                        onDetailClick = { name, nationalDexNumber -> navigator.navigate("/" + Screens.POKE_DETAILS.route.split('/')[1] + "/$name/$nationalDexNumber") }
+                    )
                 } // scene
                 scene(route = Screens.POKE_DETAILS.route) {
                     val name = it.path("name", "pikachu")!!
-                    PokemonDetailScreen(pokemonDetailViewModel, name)
+                    val nationalDexNumber = it.path("nationalDexNumber", 0)!!
+                    PokemonDetailScreen(pokemonDetailViewModel, name, nationalDexNumber)
                 } // scene
             } // NavHost
         } // Scaffold

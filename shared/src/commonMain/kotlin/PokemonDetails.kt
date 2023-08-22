@@ -1,17 +1,17 @@
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-private val defaultOther = Other(DreamWorld("", ""), Home("", "", "", ""), OfficialArtwork("", ""))
+private val defaultOther = Other(DreamWorld(), Home(), OfficialArtwork())
 
-private val defaultGenerationI = GenerationI(RedBlue("", "", "", "", "", ""), Yellow("", "", "", "", "", ""))
+private val defaultGenerationI = GenerationI(RedBlue(), Yellow())
 
-private val defaultGenerationIi = GenerationIi(Crystal("", "", "", "", "", "", "", ""), Gold("", "", "", "", ""), Silver("", "", "", "", ""))
-private val defaultGenerationIii = GenerationIii(Emerald("", ""), FireredLeafgreen("", "", "", ""), RubySapphire("", "", "", ""))
-private val defaultGenerationIv = GenerationIv(DiamondPearl("", "", "", "", "", "", "", ""), HeartgoldSoulsilver("", "", "", "", "", "", "", ""), Platinum("", "", "", "", "", "", "", ""))
-private val defaultGenerationV = GenerationV(BlackWhite(Animated("", "", "", "", "", "", "", ""), "", "", "", "", "", "", "", ""))
-private val defaultGenerationVi = GenerationVi(OmegarubyAlphasapphire("", "", "", ""), XY("", "", "", ""))
-private val defaultGenerationVii = GenerationVii(Icons("", ""), UltraSunUltraMoon("", "", "", ""))
-private val defaultGenerationViii = GenerationViii(Icons("", ""))
+private val defaultGenerationIi = GenerationIi(Crystal(), Gold(), Silver())
+private val defaultGenerationIii = GenerationIii(Emerald(), FireredLeafgreen(), RubySapphire())
+private val defaultGenerationIv = GenerationIv(DiamondPearl(), HeartgoldSoulsilver(), Platinum())
+private val defaultGenerationV = GenerationV(BlackWhite(Animated()))
+private val defaultGenerationVi = GenerationVi(OmegarubyAlphasapphire(), XY())
+private val defaultGenerationVii = GenerationVii(Icons(), UltraSunUltraMoon())
+private val defaultGenerationViii = GenerationViii(Icons())
 
 private val defaultVersions = Versions(
     defaultGenerationI,
@@ -26,9 +26,9 @@ private val defaultVersions = Versions(
 
 @Serializable
 data class PokemonDetails(
-    val abilities: List<Ability>? = emptyList(),
+    val abilities: List<Ability> = emptyList(),
     @SerialName("base_experience") val baseExperience: Int = 0,
-    val forms: List<Form> = emptyList(),
+    val forms: List<NameAndUrl> = emptyList(),
     @SerialName("game_indices") val gameIndices: List<GameIndice> = emptyList(),
     val height: Int = 0,
     @SerialName("held_items") val heldItems: List<HeldItem> = emptyList(),
@@ -39,8 +39,8 @@ data class PokemonDetails(
     val name: String = "MissingNo.",
     val order: Int = 0, // close to national dex order but families are grouped
     @SerialName("past_types") val pastTypes: List<PastType> = emptyList(),
-    val species: Species = Species("", ""),
-    val sprites: Sprites = Sprites("", "", "", "", "", "", "", "", defaultOther, defaultVersions),
+    val species: NameAndUrl = NameAndUrl(),
+    val sprites: Sprites = Sprites(other = defaultOther, versions = defaultVersions),
     val stats: List<Stat> = emptyList(),
     val types: List<Type> = emptyList(),
     val weight: Int = 0
@@ -48,45 +48,33 @@ data class PokemonDetails(
 
 @Serializable
 data class Ability(
-    val ability: AbilityX = AbilityX("", ""),
+    val ability: NameAndUrl = NameAndUrl(),
     @SerialName("is_hidden") val isHidden: Boolean = false,
     val slot: Int = 0
 )
 
 @Serializable
-data class Form(
-    val name: String = "",
-    val url: String = ""
-)
-
-@Serializable
 data class GameIndice(
     @SerialName("game_index") val gameIndex: Int = 0,
-    val version: Version = Version("", "")
+    val version: NameAndUrl = NameAndUrl()
 )
 
 @Serializable
 data class HeldItem(
-    val item: Item = Item("", ""),
+    val item: NameAndUrl = NameAndUrl(),
     @SerialName("version_details") val versionDetails: List<VersionDetail> = emptyList()
 )
 
 @Serializable
 data class Move(
-    val move: MoveX = MoveX("", ""),
+    val move: NameAndUrl = NameAndUrl(),
     @SerialName("version_group_details") val versionGroupDetails: List<VersionGroupDetail> = emptyList()
 )
 
 @Serializable
 data class PastType(
-    val generation: Generation = Generation("", ""),
+    val generation: NameAndUrl = NameAndUrl(),
     val types: List<Type> = emptyList()
-)
-
-@Serializable
-data class Species(
-    val name: String = "",
-    val url: String = ""
 )
 
 @Serializable
@@ -107,81 +95,33 @@ data class Sprites(
 data class Stat(
     @SerialName("base_stat") val baseStat: Int = 0,
     val effort: Int = 0,
-    val stat: StatX = StatX("", "")
-)
-
-@Serializable
-data class AbilityX(
-    val name: String = "",
-    val url: String = ""
-)
-
-@Serializable
-data class Version(
-    val name: String = "",
-    val url: String = ""
-)
-
-@Serializable
-data class Item(
-    val name: String = "",
-    val url: String = ""
+    val stat: NameAndUrl = NameAndUrl()
 )
 
 @Serializable
 data class VersionDetail(
     val rarity: Int = 0,
-    val version: Version = Version("", "")
-)
-
-@Serializable
-data class MoveX(
-    val name: String = "",
-    val url: String = ""
+    val version: NameAndUrl = NameAndUrl()
 )
 
 @Serializable
 data class VersionGroupDetail(
     @SerialName("level_learned_at") val levelLearnedAt: Int = 0,
-    @SerialName("move_learn_method") val moveLearnMethod: MoveLearnMethod = MoveLearnMethod("", ""),
-    @SerialName("version_group") val versionGroup: VersionGroup = VersionGroup("", "")
-)
-
-@Serializable
-data class MoveLearnMethod(
-    val name: String = "",
-    val url: String = ""
-)
-
-/*@Serializable
-data class VersionGroup(
-    val name: String = "",
-    val url: String = ""
-)*/
-
-@Serializable
-data class Generation(
-    val name: String = "",
-    val url: String = ""
+    @SerialName("move_learn_method") val moveLearnMethod: NameAndUrl = NameAndUrl(),
+    @SerialName("version_group") val versionGroup: NameAndUrl = NameAndUrl()
 )
 
 @Serializable
 data class Type(
     val slot: Int = 0,
-    val type: TypeX = TypeX("", "")
-)
-
-@Serializable
-data class TypeX(
-    val name: String = "",
-    val url: String = ""
+    val type: NameAndUrl = NameAndUrl()
 )
 
 @Serializable
 data class Other(
-    val dream_world: DreamWorld = DreamWorld("", ""),
-    val home: Home = Home("", "", "", ""),
-    @SerialName("official-artwork") val officialArtwork: OfficialArtwork = OfficialArtwork("", "")
+    @SerialName("dream_world") val dreamWorld: DreamWorld = DreamWorld(),
+    val home: Home = Home( ),
+    @SerialName("official-artwork") val officialArtwork: OfficialArtwork = OfficialArtwork()
 )
 
 @Serializable
@@ -213,56 +153,56 @@ data class Home(
 @Serializable
 data class OfficialArtwork(
     @SerialName("front_default") val frontDefault: String = "",
-    @SerialName("front_shiny") val frontShiny: String
+    @SerialName("front_shiny") val frontShiny: String = ""
 )
 
 @Serializable
 data class GenerationI(
-    @SerialName("red-blue") val redBlue: RedBlue = RedBlue("", "", "", "", "", ""),
-    val yellow: Yellow = Yellow("", "", "", "", "", "")
+    @SerialName("red-blue") val redBlue: RedBlue = RedBlue(),
+    val yellow: Yellow = Yellow()
 )
 
 @Serializable
 data class GenerationIi(
-    val crystal: Crystal = Crystal("", "", "", "", "", ""),
-    val gold: Gold = Gold("", "", "", "", ""),
-    val silver: Silver = Silver("", "", "", "", "")
+    val crystal: Crystal = Crystal(),
+    val gold: Gold = Gold(),
+    val silver: Silver = Silver()
 )
 
 @Serializable
 data class GenerationIii(
-    val emerald: Emerald = Emerald("", ""),
-    @SerialName("firered-leafgreen") val fireRedLeafGreen: FireredLeafgreen = FireredLeafgreen("", "", "", ""),
-    @SerialName("ruby-sapphire") val rubySapphire: RubySapphire = RubySapphire("", "", "", "")
+    val emerald: Emerald = Emerald(),
+    @SerialName("firered-leafgreen") val fireRedLeafGreen: FireredLeafgreen = FireredLeafgreen(),
+    @SerialName("ruby-sapphire") val rubySapphire: RubySapphire = RubySapphire()
 )
 
 @Serializable
 data class GenerationIv(
-    @SerialName("diamond-pearl") val diamondPearl: DiamondPearl = DiamondPearl("", "", "", "", "", ""),
-    @SerialName("heartgold-soulsilver") val heartgoldSoulsilver: HeartgoldSoulsilver = HeartgoldSoulsilver("", "", "", "", "", ""),
-    val platinum: Platinum = Platinum("", "", "", "", "", "")
+    @SerialName("diamond-pearl") val diamondPearl: DiamondPearl = DiamondPearl(),
+    @SerialName("heartgold-soulsilver") val heartgoldSoulsilver: HeartgoldSoulsilver = HeartgoldSoulsilver(),
+    val platinum: Platinum = Platinum()
 )
 
 @Serializable
 data class GenerationV(
-    @SerialName("black-white") val blackWhite: BlackWhite = BlackWhite(Animated("", ""), "", "", "", "", "")
+    @SerialName("black-white") val blackWhite: BlackWhite = BlackWhite(Animated())
 )
 
 @Serializable
 data class GenerationVi(
-    @SerialName("omegaruby-alphasapphire") val omegarubyAlphasapphire: OmegarubyAlphasapphire = OmegarubyAlphasapphire("", "", "", ""),
-    @SerialName("x-y") val xy: XY = XY("", "", "", "")
+    @SerialName("omegaruby-alphasapphire") val omegarubyAlphasapphire: OmegarubyAlphasapphire = OmegarubyAlphasapphire(),
+    @SerialName("x-y") val xy: XY = XY( )
 )
 
 @Serializable
 data class GenerationVii(
-    val icons: Icons?,
-    @SerialName("ultra-sun-ultra-moon") val ultraSunUltraMoon: UltraSunUltraMoon = UltraSunUltraMoon("", "", "", "")
+    val icons: Icons = Icons(),
+    @SerialName("ultra-sun-ultra-moon") val ultraSunUltraMoon: UltraSunUltraMoon = UltraSunUltraMoon()
 )
 
 @Serializable
 data class GenerationViii(
-    val icons: Icons = Icons("", "")
+    val icons: Icons = Icons()
 )
 
 @Serializable
@@ -375,7 +315,7 @@ data class Platinum(
 
 @Serializable
 data class BlackWhite(
-    val animated: Animated?,
+    val animated: Animated,
     val back_default: String = "",
     val back_female: String = "",
     val back_shiny: String = "",
@@ -426,10 +366,4 @@ data class UltraSunUltraMoon(
     val front_female: String = "",
     val front_shiny: String = "",
     val front_shiny_female: String = ""
-)
-
-@Serializable
-data class StatX(
-    val name: String = "",
-    val url: String = ""
 )

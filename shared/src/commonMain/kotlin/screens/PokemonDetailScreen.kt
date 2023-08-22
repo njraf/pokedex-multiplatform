@@ -27,7 +27,7 @@ import io.kamel.image.asyncPainterResource
 import upperFirstWords
 
 @Composable
-fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: String) {
+fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: String, nationalDexNumber: Int) {
     val uiState by pokemonDetailViewModel.uiState.collectAsState()
 
     if ((uiState.pokemonDetails.name.lowercase() != name)) {
@@ -62,7 +62,7 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
                     uiState.pokemonDetails.name.upperFirstWords('-')
                 else ""
                 Text(pokemonName)
-                Text("#${uiState.pokemonDetails.order}") //TODO: not national dex number; change this
+                Text("#$nationalDexNumber")
 
                 TypeRow(uiState.pokemonDetails.types)
             } // Column
@@ -84,7 +84,7 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
             PokemonTypes.entries.firstNotNullOf { t -> t.color.takeIf { t.typeName == uiState.pokemonDetails.types[0].type.name } }
 
         StatBars(
-            uiState.pokemonDetails.stats, mainColor, modifier = Modifier.fillMaxSize().background(
+            uiState.pokemonDetails.stats, mainColor, modifier = Modifier.fillMaxWidth().background(
                 Color(
                     red = mainColor.red,
                     green = mainColor.green,
@@ -92,6 +92,13 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
                     alpha = 0.2f
                 )
             )
+        )
+
+        val flavorText = uiState.pokemonSpeciesModel.flavorTextEntries.firstOrNull { it.language.name == "en" }?.flavorText ?: ""
+        Text(
+            text = flavorText.replace('\n', ' ').replace('\u000c', ' '),
+            softWrap = true,
+            modifier = Modifier.fillMaxWidth()
         )
     } // Column
 }

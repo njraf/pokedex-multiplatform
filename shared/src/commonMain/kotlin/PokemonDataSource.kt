@@ -1,4 +1,3 @@
-import io.kamel.image.asyncPainterResource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -16,7 +15,7 @@ enum class Regions(val code: String) {
     ALOLA("16"),
     GALAR("27"),
     PALDEA("31"),
-    //NATIONAL("1")
+    NATIONAL("1")
 }
 
 private const val BASE_URL = "https://pokeapi.co/api/v2"
@@ -34,7 +33,7 @@ class PokemonDataSource(private val client: HttpClient) {
             val entries: MutableList<PokemonEntry> = emptyList<PokemonEntry>().toMutableList()
             for (regionCode in (region.code.toInt() until (region.code.toInt() + numRequests))) {
                 val pokedex =
-                    client.get("$BASE_URL/pokedex/$regionCode/").body<Pokedex>()
+                    client.get("$BASE_URL/pokedex/$regionCode/").body<PokedexModel>()
                 entries.addAll(pokedex.pokemonEntries)
             }
             entries
@@ -44,6 +43,12 @@ class PokemonDataSource(private val client: HttpClient) {
     suspend fun fetchPokemonDetails(name: String): PokemonDetails {
         return withContext(Dispatchers.IO) {
             client.get("$BASE_URL/pokemon/$name/").body<PokemonDetails>()
+        }
+    }
+
+    suspend fun fetchPokemonSpecies(name: String): PokemonSpeciesModel {
+        return withContext(Dispatchers.IO) {
+            client.get("$BASE_URL/pokemon-species/$name/").body<PokemonSpeciesModel>()
         }
     }
 }

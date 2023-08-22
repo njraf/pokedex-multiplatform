@@ -1,6 +1,3 @@
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -12,6 +9,19 @@ class PokemonListViewModel(private val pokemonRepository: PokemonRepository) : V
 
     private var _uiState = MutableStateFlow<PokemonUiState>(PokemonUiState())
     val uiState = _uiState.asStateFlow()
+
+    val nationalDex = mutableListOf<PokemonEntry>()
+
+    init {
+        viewModelScope.launch {
+            try {
+                nationalDex.addAll(pokemonRepository.getPokemon(Regions.NATIONAL))
+            } catch (e: Exception) {
+                println("Error: " + e.message)
+            }
+        }
+    }
+
 
     fun getNames(region: Regions): List<PokemonEntry> {
         var names: List<PokemonEntry> = emptyList()

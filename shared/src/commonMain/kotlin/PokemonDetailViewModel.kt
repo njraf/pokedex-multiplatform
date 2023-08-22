@@ -7,14 +7,19 @@ import moe.tlaster.precompose.viewmodel.viewModelScope
 
 class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) : ViewModel() {
 
-    private var _uiState = MutableStateFlow<PokemonDetailsUiState>(PokemonDetailsUiState())
+    private var _uiState = MutableStateFlow(PokemonDetailsUiState())
     val uiState = _uiState.asStateFlow()
 
     fun getPokemonDetails(name: String) {
         viewModelScope.launch {
             try {
+                val pokemonDetails = pokemonRepository.getPokemonDetails(name)
+                val pokemonSpeciesModel = pokemonRepository.getPokemonSpecies(name)
                 _uiState.update {
-                    it.copy(pokemonDetails = pokemonRepository.getPokemonDetails(name))
+                    it.copy(
+                        pokemonDetails = pokemonDetails,
+                        pokemonSpeciesModel = pokemonSpeciesModel
+                    )
                 }
             } catch (e: Exception) {
                 println("Error: " + e.message)
@@ -23,4 +28,7 @@ class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) :
     }
 }
 
-data class PokemonDetailsUiState(val pokemonDetails: PokemonDetails = PokemonDetails())
+data class PokemonDetailsUiState(
+    val pokemonDetails: PokemonDetails = PokemonDetails(),
+    val pokemonSpeciesModel: PokemonSpeciesModel = PokemonSpeciesModel()
+)
