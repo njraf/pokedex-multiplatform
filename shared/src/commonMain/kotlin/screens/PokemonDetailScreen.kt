@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
@@ -23,6 +24,7 @@ import components.TypeRow
 import io.kamel.core.Resource
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import upperFirstWords
 
 @Composable
 fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: String) {
@@ -37,7 +39,8 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(10.dp)) {
-        val image = asyncPainterResource(uiState.pokemonDetails.sprites.other.officialArtwork.frontDefault)
+        val image =
+            asyncPainterResource(uiState.pokemonDetails.sprites.other.officialArtwork.frontDefault)
         if (image is Resource.Success) {
             KamelImage(
                 resource = image,
@@ -52,14 +55,14 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
         }
 
         // name, weight, height, dex number
-        Row(modifier = Modifier.fillMaxSize()) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             // name, dex number, types
             Column {
-                val pokemonName = if (uiState.pokemonDetails.name.isNotEmpty()) {
-                    uiState.pokemonDetails.name.mapIndexed { index, c -> if (index == 0) c.uppercaseChar() else c }.fold("") { acc, c -> acc + c }
-                } else ""
+                val pokemonName = if (uiState.pokemonDetails.name.isNotEmpty())
+                    uiState.pokemonDetails.name.upperFirstWords('-')
+                else ""
                 Text(pokemonName)
-                Text("#${uiState.pokemonDetails.order}")
+                Text("#${uiState.pokemonDetails.order}") //TODO: not national dex number; change this
 
                 TypeRow(uiState.pokemonDetails.types)
             } // Column
@@ -80,13 +83,15 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
         val mainColor =
             PokemonTypes.entries.firstNotNullOf { t -> t.color.takeIf { t.typeName == uiState.pokemonDetails.types[0].type.name } }
 
-        StatBars(uiState.pokemonDetails.stats, mainColor, modifier = Modifier.fillMaxSize().background(
-            Color(
-                red = mainColor.red,
-                green = mainColor.green,
-                blue = mainColor.blue,
-                alpha = 0.2f
+        StatBars(
+            uiState.pokemonDetails.stats, mainColor, modifier = Modifier.fillMaxSize().background(
+                Color(
+                    red = mainColor.red,
+                    green = mainColor.green,
+                    blue = mainColor.blue,
+                    alpha = 0.2f
+                )
             )
-        ))
+        )
     } // Column
 }

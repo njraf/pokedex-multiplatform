@@ -36,8 +36,8 @@ data class PokemonDetails(
     @SerialName("is_default") val isDefault: Boolean = true,
     @SerialName("location_area_encounters") val locationAreaEncounters: String = "",
     val moves: List<Move> = emptyList(),
-    val name: String = "",
-    val order: Int = 0,
+    val name: String = "MissingNo.",
+    val order: Int = 0, // close to national dex order but families are grouped
     @SerialName("past_types") val pastTypes: List<PastType> = emptyList(),
     val species: Species = Species("", ""),
     val sprites: Sprites = Sprites("", "", "", "", "", "", "", "", defaultOther, defaultVersions),

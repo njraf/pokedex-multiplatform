@@ -20,3 +20,19 @@ enum class PokemonTypes(val typeName: String, val color: Color) {
     STEEL("steel", Color(0xFFAAAABB)),
     FAIRY("fairy", Color(0xFFEE99EE))
 }
+
+// capitalize the first char of the string
+fun String.upperFirst(): String =
+    this.mapIndexed { index, c -> if (index == 0) c.uppercaseChar() else c }
+        .fold("") { acc, c -> acc + c }
+
+// capitalize the first char of each word separated by 'separator'
+fun String.upperFirstWords(
+    delimiter: Char, // how to split a string into words
+    ignoreCase: Boolean = false, // ignore case during the split
+    limit: Int = 0, // max number of words
+): String {
+    val newWords = mutableListOf<String>()
+    this.split(delimiter, ignoreCase = ignoreCase, limit = limit).forEach { newWords.add(it.upperFirst()) }
+    return newWords.reduce { acc, s -> acc + delimiter + s }
+}
