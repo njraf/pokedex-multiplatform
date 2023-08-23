@@ -45,7 +45,8 @@ fun App() {
         }
     }
 
-    val pokemonRepo = PokemonRepository(PokemonDataSource(httpClient))
+    val pokemonDataSource = PokemonDataSource(httpClient)
+    val pokemonRepo = PokemonRepository(pokemonDataSource)
 
     val counterViewModel = viewModel(modelClass = CounterViewModel::class) { CounterViewModel() }
     val helloViewModel = viewModel(modelClass = HelloViewModel::class) { HelloViewModel() }
