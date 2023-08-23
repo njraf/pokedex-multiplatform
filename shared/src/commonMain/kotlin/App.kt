@@ -81,11 +81,11 @@ fun App() {
                 scene(route = Screens.POKE_NAMES.route) {
                     PokemonListScreen(
                         pokemonListViewModel,
-                        onDetailClick = { name, nationalDexNumber -> navigator.navigate("/" + Screens.POKE_DETAILS.route.split('/')[1] + "/$name/$nationalDexNumber") }
+                        onDetailNavigate = { name, nationalDexNumber -> navigator.navigate("/" + Screens.POKE_DETAILS.route.split('/')[1] + "/$name/$nationalDexNumber") }
                     )
                 } // scene
                 scene(route = Screens.POKE_DETAILS.route) {
-                    val name = it.path("name", "pikachu")!!
+                    val name = it.path("name", "")!!
                     val nationalDexNumber = it.path("nationalDexNumber", 0)!!
                     PokemonDetailScreen(pokemonDetailViewModel, name, nationalDexNumber)
                 } // scene

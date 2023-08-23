@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import upperFirstWords
 
 @Composable
-fun PokemonListScreen(pokemonListViewModel: PokemonListViewModel, onDetailClick: (String, Int) -> Unit) {
+fun PokemonListScreen(pokemonListViewModel: PokemonListViewModel, onDetailNavigate: (String, Int) -> Unit) {
     val uiState by pokemonListViewModel.uiState.collectAsState()
 
     if (uiState.pokemonNames.isEmpty()) {
@@ -41,7 +41,7 @@ fun PokemonListScreen(pokemonListViewModel: PokemonListViewModel, onDetailClick:
             items(uiState.pokemonNames) { entry ->
                 Text(
                     text = "${entry.entryNumber}. ${entry.pokemonSpecies.name.upperFirstWords('-')}",
-                    modifier = Modifier.clickable { onDetailClick(entry.pokemonSpecies.name, pokemonListViewModel.nationalDex.first { it.pokemonSpecies.name == entry.pokemonSpecies.name }.entryNumber) }
+                    modifier = Modifier.clickable { onDetailNavigate(entry.pokemonSpecies.name, pokemonListViewModel.nationalDex.first { it.pokemonSpecies.name == entry.pokemonSpecies.name }.entryNumber) }
                 )
             }
         }

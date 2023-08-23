@@ -5,19 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
-enum class Regions(val code: String) {
-    KANTO("2"),
-    JOHTO("3"),
-    HOENN("4"),
-    SINNOH("5"),
-    UNOVA("8"),
-    KALOS("12"),
-    ALOLA("16"),
-    GALAR("27"),
-    PALDEA("31"),
-    NATIONAL("1")
-}
-
 private const val BASE_URL = "https://pokeapi.co/api/v2"
 
 class PokemonDataSource(private val client: HttpClient) {

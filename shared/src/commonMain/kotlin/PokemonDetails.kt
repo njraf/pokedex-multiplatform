@@ -42,7 +42,7 @@ data class PokemonDetails(
     val species: NameAndUrl = NameAndUrl(),
     val sprites: Sprites = Sprites(other = defaultOther, versions = defaultVersions),
     val stats: List<Stat> = emptyList(),
-    val types: List<Type> = emptyList(),
+    val types: List<Type> = listOf(Type(type = NameAndUrl("???"))),
     val weight: Int = 0
 )
 

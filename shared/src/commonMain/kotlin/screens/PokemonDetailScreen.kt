@@ -30,7 +30,7 @@ import upperFirstWords
 fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: String, nationalDexNumber: Int) {
     val uiState by pokemonDetailViewModel.uiState.collectAsState()
 
-    if ((uiState.pokemonDetails.name.lowercase() != name)) {
+    if ((uiState.pokemonDetails.name.lowercase() != name && name.isNotEmpty())) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
@@ -62,7 +62,7 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
                     uiState.pokemonDetails.name.upperFirstWords('-')
                 else ""
                 Text(pokemonName)
-                Text("#$nationalDexNumber")
+                Text("#${if (name.isNotEmpty()) nationalDexNumber else 0}")
 
                 TypeRow(uiState.pokemonDetails.types)
             } // Column

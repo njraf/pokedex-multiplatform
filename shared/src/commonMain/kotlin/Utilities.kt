@@ -18,7 +18,21 @@ enum class PokemonTypes(val typeName: String, val color: Color) {
     DRAGON("dragon", Color(0xFF7766EE)),
     DARK("dark", Color(0xFF775544)),
     STEEL("steel", Color(0xFFAAAABB)),
-    FAIRY("fairy", Color(0xFFEE99EE))
+    FAIRY("fairy", Color(0xFFEE99EE)),
+    UNKNOWN("???", Color(0xFF68A090))
+}
+
+enum class Regions(val code: String) {
+    KANTO("2"),
+    JOHTO("3"),
+    HOENN("4"),
+    SINNOH("5"),
+    UNOVA("8"),
+    KALOS("12"),
+    ALOLA("16"),
+    GALAR("27"),
+    PALDEA("31"),
+    NATIONAL("1")
 }
 
 // capitalize the first char of the string
