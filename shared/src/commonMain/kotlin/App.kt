@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -39,14 +40,16 @@ fun App() {
     val navigator = rememberNavigator()
     val isRootPage by navigator.canGoBack.collectAsState(initial = false)
 
-    val httpClient = HttpClient {
-        install(ContentNegotiation) {
-            json(Json { coerceInputValues = true })
+    val httpClient = remember {
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json { coerceInputValues = true })
+            }
         }
     }
 
-    val pokemonDataSource = PokemonDataSource(httpClient)
-    val pokemonRepo = PokemonRepository(pokemonDataSource)
+    val pokemonDataSource = remember { PokemonDataSource(httpClient) }
+    val pokemonRepo = remember { PokemonRepository(pokemonDataSource) }
 
     val counterViewModel = viewModel(modelClass = CounterViewModel::class) { CounterViewModel() }
     val helloViewModel = viewModel(modelClass = HelloViewModel::class) { HelloViewModel() }

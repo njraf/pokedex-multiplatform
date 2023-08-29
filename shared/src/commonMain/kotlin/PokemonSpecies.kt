@@ -10,7 +10,7 @@ data class PokemonSpeciesModel(
     @SerialName("evolution_chain") val evolutionChain: EvolutionChain = EvolutionChain(),
     @SerialName("evolves_from_species") val evolvesFromSpecies: NameAndUrl = NameAndUrl(),
     @SerialName("flavor_text_entries") val flavorTextEntries: List<FlavorTextEntry> = emptyList(),
-    @SerialName("form_descriptions") val formDescriptions: List<String> = emptyList(), //TODO: json is empty array; find actual value
+    @SerialName("form_descriptions") val formDescriptions: List<FormDescription> = emptyList(), //TODO: json is empty array; find actual value
     @SerialName("forms_switchable") val formsSwitchable: Boolean = false,
     @SerialName("gender_rate") val genderRate: Int = 0,
     val genera: List<Genera> = emptyList(),
@@ -69,3 +69,8 @@ data class Variety(
     val pokemon: NameAndUrl = NameAndUrl()
 )
 
+@Serializable
+data class FormDescription(
+    val description: String = "",
+    val language: NameAndUrl = NameAndUrl()
+)

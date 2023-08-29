@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,7 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
-        pokemonDetailViewModel.getPokemonDetails(name)
+        pokemonDetailViewModel.getPokemonDetails(name, nationalDexNumber)
         return
     }
 
@@ -60,16 +61,16 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
 
         // name, weight, height, dex number
         Row(modifier = Modifier.fillMaxWidth()) {
-            // name, dex number, types
+            // name, dex number
             Column {
                 val pokemonName = if (uiState.pokemonDetails.name.isNotEmpty())
                     uiState.pokemonDetails.name.upperFirstWords('-')
                 else ""
                 Text(pokemonName)
                 Text("#${if (name.isNotEmpty()) nationalDexNumber else 0}")
-
-                TypeRow(uiState.pokemonDetails.types)
             } // Column
+
+            Spacer(modifier = Modifier.padding(8.dp))
 
             // weight, height
             Column {
@@ -83,6 +84,8 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
                 }
             }
         } // Row
+
+        TypeRow(uiState.pokemonDetails.types)
 
         val mainColor =
             PokemonTypes.entries.firstNotNullOf { t -> t.color.takeIf { t.typeName == uiState.pokemonDetails.types[0].type.name } }

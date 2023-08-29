@@ -33,6 +33,12 @@ class PokemonDataSource(private val client: HttpClient) {
         }
     }
 
+    suspend fun fetchPokemonDetails(nationalDexNumber: Int): PokemonDetails {
+        return withContext(Dispatchers.IO) {
+            client.get("$BASE_URL/pokemon/$nationalDexNumber/").body<PokemonDetails>()
+        }
+    }
+
     suspend fun fetchPokemonSpecies(name: String): PokemonSpeciesModel {
         return withContext(Dispatchers.IO) {
             client.get("$BASE_URL/pokemon-species/$name/").body<PokemonSpeciesModel>()
