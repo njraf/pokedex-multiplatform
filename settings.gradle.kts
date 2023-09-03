@@ -3,6 +3,7 @@ rootProject.name = "PokedexMultiplatform"
 include(":androidApp")
 include(":shared")
 include(":desktopApp")
+include(":mingwX64App")
 
 pluginManagement {
     repositories {

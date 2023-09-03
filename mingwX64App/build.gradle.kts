@@ -1,0 +1,40 @@
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+
+plugins {
+    kotlin("multiplatform")
+    id("org.jetbrains.compose")
+}
+
+kotlin {
+    //jvm()
+
+    val hostOs = System.getProperty("os.name")
+    val isMingwX64 = hostOs.startsWith("Windows")
+    val nativeTarget = when {
+        hostOs == "Mac OS X" -> macosX64("native")
+        hostOs == "Linux" -> linuxX64("native")
+        isMingwX64 -> mingwX64("native")
+        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+    }
+
+    nativeTarget.apply {
+        compilations.getByName("main") {
+            cinterops {
+                //val libcurl by creating
+            }
+        }
+        binaries {
+            executable {
+                //entryPoint = "main"
+            }
+        }
+    }
+
+    sourceSets {/*
+        val mingwX64Main by getting  {
+            dependencies {
+                implementation(project(":shared"))
+            }
+        }*/
+    }
+}

@@ -1,0 +1,15 @@
+Compile kotlin/jvm:
+- In the terminal, type: gradlew <package>
+- <package> is:
+-- packageMsi for Windows
+-- packageDmg for macOS
+-- packageDeb for Debian systems
+- see the output for where the installer is placed
+
+Compile kotlin/native:
+- In the terminal, type: kotlinc-native <path-to-main.kt> -o <name-of-exe>
+- Example: kotlinc-native mingwX64App/src/mingwX64Main/src/kotlin/main.kt -o myApp
+- the myApp.exe will appear in the directory where the command was typed
+
+Compile kotlin/native dll to use in a native c(++) project:
+- TODO
