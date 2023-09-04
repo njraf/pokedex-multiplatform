@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
@@ -27,11 +28,15 @@ kotlin {
             executable {
                 //entryPoint = "main"
             }
+            sharedLib {
+                //baseName = "native" // on Linux and macOS
+                baseName = "libnative" // on Windows
+            }
         }
     }
 
-    sourceSets {/*
-        val mingwX64Main by getting  {
+    sourceSets {
+        /*val mingwX64Main by getting  {
             dependencies {
                 implementation(project(":shared"))
             }

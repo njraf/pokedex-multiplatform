@@ -8,8 +8,21 @@ Compile kotlin/jvm:
 
 Compile kotlin/native:
 - In the terminal, type: kotlinc-native <path-to-main.kt> -o <name-of-exe>
-- Example: kotlinc-native mingwX64App/src/mingwX64Main/src/kotlin/main.kt -o myApp
+- Example: kotlinc-native mingwX64App/src/mingwX64Main/kotlin/main.kt -o myApp
 - the myApp.exe will appear in the directory where the command was typed
+- multiple files must be added to the command is they are used in the project
+- TODO: learn to do this with gradle
+
+kotlin/native library:
+- Creates a kotlin library (.klib) for use in kotlin/native projects
+- In the terminal, type: kotlinc-native <path-to-main.kt> -p library -o <name-of-exe>
+- Example: kotlinc-native mingwX64App/src/mingwX64Main/kotlin/main.kt -p library -o myApp
+- the myApp.klib will appear in the directory where the command was typed
+- multiple files must be added to the command is they are used in the project
+- to use it, type: "klib install myLib.klib"
+-- to use the klib while compiling, use the "-l myLib" flag
+-- Example: kotlinc-native mingwX64App/src/mingwX64Main/kotlin/main.kt -l myLib -o myApp
+- TODO: learn to do this with gradle
 
 Compile kotlin/native dll to use in a native c(++) project:
 - TODO

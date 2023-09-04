@@ -93,6 +93,11 @@ kotlin {
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
+        /*val mingwX64Main by getting {
+            dependencies {
+                dependsOn(commonMain)
+            }
+        }*/
     }
 }
 

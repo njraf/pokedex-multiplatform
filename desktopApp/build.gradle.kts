@@ -23,7 +23,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "KotlinMultiplatformComposeDesktopApplication"
+            packageName = "PokedexKMP" // change this to change the name of the executable
             packageVersion = "1.0.0"
         }
     }
