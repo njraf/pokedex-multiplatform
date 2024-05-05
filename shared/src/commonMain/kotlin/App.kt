@@ -43,7 +43,10 @@ fun App() {
     val httpClient = remember {
         HttpClient {
             install(ContentNegotiation) {
-                json(Json { coerceInputValues = true })
+                json(Json {
+                    coerceInputValues = true
+                    isLenient = true
+                })
             }
         }
     }
