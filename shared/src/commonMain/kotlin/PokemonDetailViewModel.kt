@@ -5,12 +5,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
+const val TIMEOUT = 10000L
+
 class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) : ViewModel() {
 
-    private var _uiState = MutableStateFlow(PokemonDetailsUiState())
+    private var _uiState = MutableStateFlow<PokemonDetailsUiState>(PokemonDetailsUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     private val jobs = mutableListOf<Job>()
@@ -25,20 +28,20 @@ class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) :
 
     fun getPokemonDetails(name: String, nationalDexNumber: Int) {
         viewModelScope.launch {
+            _uiState.value = PokemonDetailsUiState.Loading
             try {
                 //val pokemonDetails = pokemonRepository.getPokemonDetails(name)
-                val pokemonDetails = async { pokemonRepository.getPokemonDetails(nationalDexNumber) }
-                val pokemonSpeciesModel = async { pokemonRepository.getPokemonSpecies(name) }
+                val pokemonDetails = withTimeout(TIMEOUT) { async { pokemonRepository.getPokemonDetails(nationalDexNumber) } }
+                val pokemonSpeciesModel = withTimeout(TIMEOUT) { async { pokemonRepository.getPokemonSpecies(name) } }
                 jobs.add(pokemonDetails)
                 jobs.add(pokemonSpeciesModel)
-                _uiState.update {
-                    it.copy(
-                        pokemonDetails = pokemonDetails.await(),
-                        pokemonSpeciesModel = pokemonSpeciesModel.await()
-                    )
-                }
+                _uiState.value = PokemonDetailsUiState.Success(
+                    pokemonDetails = pokemonDetails.await(),
+                    pokemonSpeciesModel = pokemonSpeciesModel.await()
+                )
             } catch (e: Exception) {
                 println("Error: " + e.message)
+                _uiState.value = PokemonDetailsUiState.Error("ERROR: " + (e.message ?: "Unknown error"))
             } finally {
                 jobs.clear()
             }
@@ -46,7 +49,10 @@ class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) :
     }
 }
 
-data class PokemonDetailsUiState(
-    val pokemonDetails: PokemonDetails = PokemonDetails(),
-    val pokemonSpeciesModel: PokemonSpeciesModel = PokemonSpeciesModel()
-)
+sealed class PokemonDetailsUiState {
+    data class Success(val pokemonDetails: PokemonDetails = PokemonDetails(),
+                       val pokemonSpeciesModel: PokemonSpeciesModel = PokemonSpeciesModel()
+    ) : PokemonDetailsUiState()
+    object Loading : PokemonDetailsUiState()
+    data class Error(val message: String) : PokemonDetailsUiState()
+}

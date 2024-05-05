@@ -1,6 +1,7 @@
 package components
 
 import Stat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +25,14 @@ import upperFirstWords
 
 
 @Composable
-fun StatBars(stats: List<Stat>, mainColor: Color, modifier: Modifier) {
-    Column(modifier = modifier) {
+fun StatBars(stats: List<Stat>, mainColor: Color) {
+    Column(modifier = Modifier.fillMaxWidth().background(
+        Color(
+            red = mainColor.red,
+            green = mainColor.green,
+            blue = mainColor.blue,
+            alpha = 0.2f
+        ))) {
         for (stat in stats) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(4.dp)

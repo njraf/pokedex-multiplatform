@@ -46,6 +46,7 @@ fun App() {
                 json(Json {
                     coerceInputValues = true
                     isLenient = true
+                    ignoreUnknownKeys = true
                 })
             }
         }
