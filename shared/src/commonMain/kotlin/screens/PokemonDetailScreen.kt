@@ -61,9 +61,11 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
     /// Content ///
 
     Column(modifier = Modifier.fillMaxSize().padding(10.dp).verticalScroll(state = rememberScrollState())) {
-        ContentImage(successState)
+        if (successState.pokemonDetails.id != 0) {
+            ContentImage(successState)
+        }
 
-        InfoRow(successState, name, nationalDexNumber)
+        InfoRow(successState)
 
         TypeRow(successState.pokemonDetails.types)
 
@@ -82,7 +84,7 @@ fun PokemonDetailScreen(pokemonDetailViewModel: PokemonDetailViewModel, name: St
 }
 
 @Composable
-fun InfoRow(successState: PokemonDetailsUiState.Success, name: String, nationalDexNumber: Int) {
+fun InfoRow(successState: PokemonDetailsUiState.Success) {
     // name, weight, height, dex number
     Row(modifier = Modifier.fillMaxWidth()) {
         // name, dex number
@@ -91,7 +93,7 @@ fun InfoRow(successState: PokemonDetailsUiState.Success, name: String, nationalD
                 successState.pokemonDetails.name.upperFirstWords('-')
             else ""
             Text(pokemonName)
-            Text("#${if (name.isNotEmpty()) nationalDexNumber else 0}")
+            Text("#${successState.pokemonDetails.id}")
         } // Column
 
         Spacer(modifier = Modifier.padding(8.dp))
