@@ -21,16 +21,11 @@ import androidx.compose.ui.unit.sp
 import upperFirstWords
 
 @Composable
-fun PokemonListScreen(pokemonListViewModel: PokemonListViewModel, onDetailNavigate: (String, Int) -> Unit) {
+fun PokemonListScreen(
+    pokemonListViewModel: PokemonListViewModel,
+    onDetailNavigate: (String, Int) -> Unit,
+) {
     val uiState by pokemonListViewModel.uiState.collectAsState()
-
-    if (uiState.pokemonNames.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-        pokemonListViewModel.getNames(Regions.KANTO)
-        return
-    }
 
     Column {
         LazyRow {
@@ -38,15 +33,39 @@ fun PokemonListScreen(pokemonListViewModel: PokemonListViewModel, onDetailNaviga
                 Button(onClick = { pokemonListViewModel.getNames(region) }) { Text(region.name) }
             }
         }
+
+        when (uiState) {
+            is PokemonUiState.Loading ->
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+
+            is PokemonUiState.Error ->
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text((uiState as PokemonUiState.Error).message)
+                }
+
+            else -> ""
+        }
+
+        if (uiState !is PokemonUiState.Success) {
+            return
+        }
+
+        val successState = uiState as PokemonUiState.Success
+
+        /// Content ///
+
         LazyColumn {
-            items(uiState.pokemonNames) { entry ->
+            items(successState.pokemonNames) { entry ->
                 Text(
                     text = "${entry.entryNumber}. ${entry.pokemonSpecies.name.upperFirstWords('-')}",
                     fontSize = 22.sp,
                     modifier = Modifier.fillMaxSize().clickable {
                         onDetailNavigate(
                             entry.pokemonSpecies.name,
-                            pokemonListViewModel.nationalDex.first { it.pokemonSpecies.name == entry.pokemonSpecies.name }.entryNumber)
+                            pokemonListViewModel.nationalDex.firstOrNull { it.pokemonSpecies.name == entry.pokemonSpecies.name }?.entryNumber ?: 0
+                        )
                     }
                 )
             }

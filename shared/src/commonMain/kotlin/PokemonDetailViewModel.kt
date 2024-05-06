@@ -9,14 +9,13 @@ import kotlinx.coroutines.withTimeout
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 
-const val TIMEOUT = 10000L
-
 class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) : ViewModel() {
 
     private var _uiState = MutableStateFlow<PokemonDetailsUiState>(PokemonDetailsUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     private val jobs = mutableListOf<Job>()
+    private val timeout = 10000L
 
     override fun onCleared() {
         super.onCleared()
@@ -27,12 +26,20 @@ class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) :
     }
 
     fun getPokemonDetails(name: String, nationalDexNumber: Int) {
+        if (nationalDexNumber == 0) {
+            _uiState.value = PokemonDetailsUiState.Success(
+                pokemonDetails = PokemonDetails(),
+                pokemonSpeciesModel = PokemonSpeciesModel()
+            )
+            return
+        }
+
         viewModelScope.launch {
             _uiState.value = PokemonDetailsUiState.Loading
             try {
                 //val pokemonDetails = pokemonRepository.getPokemonDetails(name)
-                val pokemonDetails = withTimeout(TIMEOUT) { async { pokemonRepository.getPokemonDetails(nationalDexNumber) } }
-                val pokemonSpeciesModel = withTimeout(TIMEOUT) { async { pokemonRepository.getPokemonSpecies(name) } }
+                val pokemonDetails = withTimeout(timeout) { async { pokemonRepository.getPokemonDetails(nationalDexNumber) } }
+                val pokemonSpeciesModel = withTimeout(timeout) { async { pokemonRepository.getPokemonSpecies(name) } }
                 jobs.add(pokemonDetails)
                 jobs.add(pokemonSpeciesModel)
                 _uiState.value = PokemonDetailsUiState.Success(
@@ -40,7 +47,6 @@ class PokemonDetailViewModel(private val pokemonRepository: PokemonRepository) :
                     pokemonSpeciesModel = pokemonSpeciesModel.await()
                 )
             } catch (e: Exception) {
-                println("Error: " + e.message)
                 _uiState.value = PokemonDetailsUiState.Error("ERROR: " + (e.message ?: "Unknown error"))
             } finally {
                 jobs.clear()
